@@ -1,45 +1,53 @@
-var john = true;
-var random;
+let isJohn = true;
 
-function change(){
-    random = false;
-    if(john){
-        document.getElementById("Name").innerHTML="Jane Doe";
-        document.getElementById("Email").innerHTML="Jane@gmail.com";
-        document.getElementById("Image").setAttribute("src","./img_avatar2.png")
-        john=false;
-    }
-    else{
-        document.getElementById("Name").innerHTML="John Doe";
-        document.getElementById("Email").innerHTML="John@gmail.com";
-        document.getElementById("Image").setAttribute("src","./img_avatar.png")
-        john=true;
+/* 🔁 Toggle between John & Jane */
+function change() {
+    clearRandomImage();
+
+    if (isJohn) {
+        updateUser("Jane Doe", "jane@gmail.com", "./img_avatar2.png");
+    } else {
+        updateUser("John Doe", "john@gmail.com", "./img_avatar.png");
     }
 
-    document.getElementById("randomImage").innerHTML="";
+    isJohn = !isJohn;
 }
 
-async function Random(){
-    random = true;
+/* 🧠 Reusable function */
+function updateUser(name, email, img) {
+    document.getElementById("Name").innerText = name;
+    document.getElementById("Email").innerText = email;
+    document.getElementById("Image").src = img;
+}
 
-    const res = await fetch('https://randomuser.me/api/');
-    const data = await res.json();
-    const user = data.results[0];
-    document.getElementById("Name").innerHTML = user.name.first + " " + user.name.last;
-    document.getElementById("Email").innerHTML = user.email;
-    const gender = user.gender;
-    if(gender==="male"){
-        document.getElementById("Image").setAttribute("src","./img_avatar.png")
-    }
-    else{
-        document.getElementById("Image").setAttribute("src","./img_avatar2.png")
-    }
-    if(random){
-        const image = user.picture.large;
-        let p = document.getElementById("randomImage");
-        p.innerHTML = '<img src="' + image + '" alt="Random User" style="width: 100%;">';
-    }
-    else{
-        document.getElementById("randomImage").innerHTML="";
+/* 🧹 Clear side image */
+function clearRandomImage() {
+    document.getElementById("randomImage").innerHTML = "";
+}
+
+/* 🎲 Fetch random user */
+async function Random() {
+    try {
+        clearRandomImage();
+
+        const res = await fetch("https://randomuser.me/api/");
+        const data = await res.json();
+        const user = data.results[0];
+
+        const fullName = `${user.name.first} ${user.name.last}`;
+        const email = user.email;
+        const profileImage = user.picture.large;
+
+        // 🧾 Update main card
+        updateUser(fullName, email, profileImage);
+
+        // 🖼️ Show image beside card
+        document.getElementById("randomImage").innerHTML = `
+            <img src="${profileImage}" alt="Random User" class="random-img">
+        `;
+
+    } catch (error) {
+        console.error(error);
+        alert("⚠️ Failed to fetch user. Try again!");
     }
 }
