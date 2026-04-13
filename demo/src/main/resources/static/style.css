@@ -22,12 +22,12 @@ body {
 /* 🧱 Content Row */
 .content {
     display: flex;
-    gap: 20px;
-    align-items: center;
+    gap: 30px;
     justify-content: center;
-}
-
-/* 🧾 Title */
+    align-items: center;
+    flex-direction: row;
+    /* force horizontal */
+}/* 🧾 Title */
 h1 {
     color: white;
     margin-bottom: 20px;
@@ -36,6 +36,7 @@ h1 {
 /* 🧱 Card */
 .card {
     width: 280px;
+    flex-shrink: 0;
     background: white;
     border-radius: 16px;
     padding: 20px;
@@ -74,15 +75,18 @@ h1 {
 /* 🎲 Random Image beside */
 #randomImage {
     width: 280px;
+    min-height: 300px;
+    /* reserve space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .random-img {
     width: 100%;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.5s ease;
 }
-
 /* 🔘 Buttons */
 .buttons {
     margin-top: 25px;
